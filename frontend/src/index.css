@@ -1,0 +1,316 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #102a43;
+  background: #f5f7fb;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #eef3ff 0%, #f8f7f2 100%);
+  color: #102a43;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #0f766e;
+  outline-offset: 2px;
+}
+
+.page-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+.panel {
+  width: min(900px, 100%);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #d9e2ec;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  padding: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #166534;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.lede {
+  margin-top: 0.75rem;
+  color: #334e68;
+}
+
+.toolbar,
+.field-label,
+.action-row {
+  margin-top: 1rem;
+}
+
+.profile-card {
+  margin-top: 1.5rem;
+  background: #f8fafc;
+  border: 1px solid #dbeafe;
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.section-heading-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-heading-row h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.profile-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: #334e68;
+}
+
+.profile-grid input,
+.profile-grid select,
+.profile-grid textarea,
+.field-label {
+  display: block;
+  font-weight: 700;
+  color: #334e68;
+  margin-bottom: 0.45rem;
+}
+
+.profile-grid input,
+.profile-grid select {
+  width: 100%;
+  border: 1px solid #bfd0e1;
+  border-radius: 10px;
+  background: white;
+  padding: 0.7rem 0.8rem;
+  color: #102a43;
+}
+
+.wide-field {
+  grid-column: 1 / -1;
+}
+
+.checkbox-field {
+  justify-content: flex-start;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+}
+
+.checkbox-field input {
+  width: auto;
+  margin: 0;
+}
+
+.profile-save-status {
+  margin: 0.75rem 0 0;
+  color: #166534;
+  font-weight: 700;
+}
+
+.field-label {
+  display: block;
+  font-weight: 700;
+  color: #334e68;
+  margin-bottom: 0.45rem;
+}
+
+.select-input,
+.link-input {
+  width: 100%;
+  border: 1px solid #bfd0e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  padding: 0.8rem 0.9rem;
+  color: #102a43;
+}
+
+.link-input {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.primary-btn,
+.secondary-btn {
+  border-radius: 10px;
+  padding: 0.85rem 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.primary-btn {
+  background: #0f766e;
+  color: #ffffff;
+}
+
+.primary-btn:hover,
+.primary-btn:focus-visible {
+  background: #115e59;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.2);
+}
+
+.secondary-btn {
+  background: #e2e8f0;
+  color: #102a43;
+}
+
+.secondary-btn:hover,
+.secondary-btn:focus-visible {
+  background: #cbd5e1;
+}
+
+.status {
+  margin: 1rem 0 0;
+  font-size: 0.95rem;
+  color: #334e68;
+}
+
+.scorecard {
+  margin-top: 2rem;
+  padding: 1rem 1.2rem;
+  background: #f1f5f9;
+  border-radius: 12px;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.label {
+  color: #486581;
+}
+
+.decision {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.decision.buy,
+.pill.buy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.decision.alter_then_buy,
+.pill.alter_then_buy {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.decision.pass,
+.pill.pass {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.table-wrap {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.85rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: top;
+}
+
+th {
+  background: #f8fafc;
+  color: #334e68;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 1.25rem;
+  }
+
+  .action-row {
+    flex-direction: column;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+}
