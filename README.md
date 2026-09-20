@@ -1,3 +1,102 @@
-# thedressscoutdecisionmaker
-Sifting through hundreds of catalog items to verify sleeves, necklines, and color boundaries manually leads to high return rates.
-1. The Product: What and Why (Indexed PRD)1.1 Problem Statement1.1.1 Fragmentation: Standard e-commerce filters do not account for geometric body balance (pear-shape shoulder-to-hip ratios) or petite vertical line constraints ($156\text{ cm}$).1.1.2 Footwear Disconnect: Pairing flat orthopedic/walking sneakers (Campus/Sparx) with dresses frequently results in visual leg-shortening when hemlines sit at awkward mid-calf transitions.1.1.3 Decision Fatigue: Sifting through hundreds of catalog items to verify sleeves, necklines, and color boundaries manually leads to high return rates.1.2 Objective & Scope1.2.1 Core Purpose: An autonomous decision agent that crawls office wear catalogs, executes deterministic geometric styling evaluations, and yields a curated, actionable BUY / ALTER_THEN_BUY / PASS scorecard.1.2.2 Non-Goals: The tool is not an e-commerce checkout platform, not a social feed, and not an open-ended generic chatbot.1.3 Target User Baseline (The "Anchor Specs")1.3.1 Height & Frame: $156\text{ cm}$ (Petite rules apply strictly).1.3.2 Weight & Silhouette: $74\text{ kg}$, Pear shape (wider lower half, narrower shoulder line).1.3.3 Foot Profile: Flat foot requiring supportive low-profile walking shoes (Campus / Sparx), strictly matching the dress/lower hem tone.1.3.4 Palette: Green, Teal, Dark Blue, Formal Blue, White, Half-White. Black is non-preferred for special/formal wear.1.3.5 Structural Cuts: Fit & Flare or Long A-Line; sleeves mandatory; hem strictly just over the knee ($\le 1.5\text{ inches}$ below kneecap).2. Technical Requirements2.1 Agent Engine: Python 3.11+, Pydantic v2, Instructor (wrapping gpt-4o-mini or gemini-1.5-flash), Playwright / Crawl4AI.2.2 API Layer: FastAPI with CORS middleware and strict Pydantic request/response schemas.2.3 Frontend Interface: React (Vite / Next.js) with semantic HTML5, Tailwind CSS, and axe-core accessibility automation.2.4 Accessibility: WCAG 2.2 Level AA compliance (4.5:1 text contrast, full keyboard navigation, screen reader aria-live announcements).2.5 Cloud Runtime: GitHub Codespaces (DevContainer) for local development; Render Web Service (Dockerized) for production.
+# Petite Office Agent
+
+A local-first style decision engine for office-dress recommendations.
+
+## Purpose
+
+- Evaluate product fit with a private, encrypted personal anchor profile
+- Apply business rules for sleeve requirement, silhouette, hem length, color palette, and formality
+- Return BUY / ALTER_THEN_BUY / PASS decisions
+- Keep private profile values out of source files and away from the browser
+- Support a future parameterized multi-user architecture without committing prematurely
+
+## Current architecture
+
+- Backend: FastAPI service with deterministic evaluation rules
+- Frontend: Vite + React local UI for profile editing and evaluation
+- Storage: encrypted local profile persisted in `.env` using Fernet
+- AI layer: optional, backend-only, and gracefully falls back if unavailable or invalid
+
+## Security model
+
+This project is intentionally local-first and single-user today:
+
+- the personal profile is encrypted and stored locally
+- no profile data is committed to source control
+- the admin profile path is a local management seam for future parameterization
+- no API keys or private profile details are exposed to the frontend
+
+## Local setup
+
+1. Make sure the project dependencies are installed:
+   - `cd /workspaces/thedressscoutdecisionmaker && python3 -m pip install -r requirements.txt`
+   - `cd /workspaces/thedressscoutdecisionmaker/frontend && npm install`
+2. Create or update `.env` with your encrypted profile values.
+3. Start the backend:
+   - `cd /workspaces/thedressscoutdecisionmaker && uvicorn backend.app.main:app --host 0.0.0.0 --port 8000`
+4. Start the frontend:
+   - `cd /workspaces/thedressscoutdecisionmaker/frontend && npm run dev -- --host 0.0.0.0`
+5. Open the frontend locally and use the profile editor to save the encrypted profile.
+
+## One-command local run
+
+If you want to start the services together for local validation:
+
+```bash
+cd /workspaces/thedressscoutdecisionmaker && (uvicorn backend.app.main:app --host 0.0.0.0 --port 8000 & cd frontend && npm run dev -- --host 0.0.0.0)
+```
+
+This starts the API and Vite dev server in one shell session for local testing.
+
+## Encrypted profile setup
+
+The app expects values like these in `.env`:
+
+```bash
+PERSONAL_PROFILE_SECRET="<fernet-secret>"
+PERSONAL_PROFILE_ENCRYPTED="<encrypted-json>"
+```
+
+The helper script can generate the encrypted payload:
+
+```bash
+cd /workspaces/thedressscoutdecisionmaker && python3 scripts/create_profile.py
+```
+
+## Local validation commands
+
+### Backend tests
+
+```bash
+cd /workspaces/thedressscoutdecisionmaker && /usr/bin/python3.12 -m pytest backend/tests/test_anchor_rules.py -q
+```
+
+### Frontend build
+
+```bash
+cd /workspaces/thedressscoutdecisionmaker/frontend && npm run build
+```
+
+### Production-style smoke test with dummy AI key
+
+```bash
+cd /workspaces/thedressscoutdecisionmaker && OPENAI_API_KEY=dummy-key uvicorn backend.app.main:app --host 0.0.0.0 --port 8000
+```
+
+Then test the endpoints:
+
+- `/health`
+- `/profile`
+- `/ai/search-queries`
+- `/search/evaluate`
+
+## Expected behavior
+
+- The local encrypted profile loads correctly.
+- Search queries are generated from the private profile.
+- The curated evaluation returns BUY / ALTER_THEN_BUY / PASS items.
+- If the OpenAI key is missing or invalid, the app still runs and falls back to deterministic local scoring.
+
+## Notes
+
+This app purposely keeps a private single-user workflow today while exposing a profile management seam for future parameterization. It is not yet a public multi-user admin system, but the structure is ready to evolve without reworking the core rules.
